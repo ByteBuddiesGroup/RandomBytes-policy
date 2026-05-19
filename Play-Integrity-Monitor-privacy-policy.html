@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Play Integrity Monitor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #222;
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid #ccc;
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Privacy Policy</h1>
+
+    <p>
+        <strong>App:</strong> Play Integrity Monitor<br>
+        <strong>Developer:</strong> ByteBuddies<br>
+        <strong>Last updated:</strong> 2026-05-19
+    </p>
+
+    <hr>
+
+    <h2>Summary</h2>
+    <p>Play Integrity Monitor does not collect personal information, does not have accounts, does not run advertising, and does not sell or share your data with third parties. The sections below explain precisely what data exists, where it goes, and how long it stays.</p>
+
+    <hr>
+
+    <h2>1. What the app does</h2>
+    <p>Play Integrity Monitor calls the <a href="https://developer.android.com/google/play/integrity/overview" target="_blank" rel="noopener noreferrer">Google Play Integrity API</a> on your behalf to determine whether your device currently satisfies the criteria that Google Wallet and similar apps use when deciding to allow contactless payments. The result is displayed on your device and stored locally so you can see how it has changed over time.</p>
+
+    <hr>
+
+    <h2>2. Data stored on your device</h2>
+    <p>All of the following lives exclusively in the app's private storage on your device. It is never shared with advertisers, analytics providers, or any service other than the app's own backend (described in section 3).</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>What</th>
+                <th>Why</th>
+                <th>How long</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Random install ID</strong></td>
+                <td>A UUID generated at first launch, used to apply per-installation rate limits on the backend. It is not linked to your Google account, Android ID, or any other identifier. You can reset it by clearing app data.</td>
+                <td>Until you clear app data or uninstall</td>
+            </tr>
+            <tr>
+                <td><strong>Check history</strong></td>
+                <td>Timestamp, result status, trigger type, device integrity verdict flags, and the raw JSON response for each completed check</td>
+                <td>90 days (older entries are deleted automatically)</td>
+            </tr>
+            <tr>
+                <td><strong>App preferences</strong></td>
+                <td>Auto-check on/off, check schedule times, notification preference, quota counters, last-check timestamps, and server config cache</td>
+                <td>Until you clear app data or uninstall</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>The app does <strong>not</strong> store:</p>
+    <ul>
+        <li>Your name, email address, or any account credentials</li>
+        <li>Your location</li>
+        <li>Your contacts, calendar, photos, or any media</li>
+        <li>Advertising identifiers (GAID)</li>
+        <li>Device identifiers such as IMEI or MAC address</li>
+    </ul>
+
+    <hr>
+
+    <h2>3. Data sent to the app's backend</h2>
+    <p>Each integrity check sends one HTTPS request to the app's backend server (<code>integrity-autocheck-backend-*.run.app</code>), which is operated by ByteBuddies on Google Cloud Run.</p>
+
+    <p>The request contains:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Field</th>
+                <th>What it is</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Encrypted Play Integrity token</td>
+                <td>An opaque token issued by Google's Play Integrity API. The backend sends it to Google for decoding; the raw token is not stored.</td>
+            </tr>
+            <tr>
+                <td>Request hash</td>
+                <td>A non-reversible hash of the request context. Used to bind the token to this specific request and detect replays.</td>
+            </tr>
+            <tr>
+                <td>Install ID</td>
+                <td>The random UUID described in section 2.</td>
+            </tr>
+            <tr>
+                <td>Trigger</td>
+                <td>What started the check (e.g., <code>manual</code>, <code>periodic</code>, <code>boot</code>).</td>
+            </tr>
+            <tr>
+                <td>Client timestamp</td>
+                <td>The time the check was initiated, used to verify token freshness.</td>
+            </tr>
+            <tr>
+                <td>App version</td>
+                <td>Version code and version name of Play Integrity Monitor.</td>
+            </tr>
+            <tr>
+                <td>Google Wallet version</td>
+                <td>Version of Google Wallet on your device, if installed. Sent as a diagnostic aid.</td>
+            </tr>
+            <tr>
+                <td>Play Services version</td>
+                <td>Version of Google Play Services on your device.</td>
+            </tr>
+            <tr>
+                <td>Play Store version</td>
+                <td>Version of Google Play Store on your device.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>The backend returns a compact decision (<code>ready</code>, <code>likely_blocked</code>, <code>unknown</code>, <code>error</code>) plus the verdict labels from the Play Integrity API. The backend does <strong>not</strong> return, and the app does <strong>not</strong> transmit, your Google account identity, location, contacts, or any personal identifiers beyond the install ID.</p>
+
+    <h3>What the backend retains</h3>
+    <p>The backend uses <a href="https://firebase.google.com/docs/firestore" target="_blank" rel="noopener noreferrer">Cloud Firestore</a> to enforce per-installation rate limits. For each install ID it stores:</p>
+    <ul>
+        <li>A hash of the install ID (the raw UUID is not stored)</li>
+        <li>Daily request count</li>
+        <li>Timestamp of the most recent request</li>
+        <li>Error counters</li>
+    </ul>
+
+    <p>The backend does <strong>not</strong> store the raw integrity token, the full decrypted verdict payload, or any account identifiers. Aggregated operational metrics (request counts, decision distribution, error rates, latency) are logged without any per-install identifiers for capacity planning and quota management.</p>
+
+    <hr>
+
+    <h2>4. Third-party services</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Service</th>
+                <th>Purpose</th>
+                <th>Privacy information</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Google Play Integrity API</strong></td>
+                <td>Issues the encrypted integrity token that the backend decodes</td>
+                <td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a></td>
+            </tr>
+            <tr>
+                <td><strong>Google Cloud Run</strong></td>
+                <td>Hosts the app's backend</td>
+                <td><a href="https://cloud.google.com/terms/cloud-privacy-notice" target="_blank" rel="noopener noreferrer">Google Cloud Privacy</a></td>
+            </tr>
+            <tr>
+                <td><strong>Google Cloud Firestore</strong></td>
+                <td>Stores rate-limit counters on the backend</td>
+                <td><a href="https://cloud.google.com/terms/cloud-privacy-notice" target="_blank" rel="noopener noreferrer">Google Cloud Privacy</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>The app does not use any advertising SDKs, crash-reporting services, analytics SDKs, or social login SDKs.</p>
+
+    <hr>
+
+    <h2>5. Permissions</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Permission</th>
+                <th>Why it is needed</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>INTERNET</code></td>
+                <td>To reach the backend server and the Play Integrity API</td>
+            </tr>
+            <tr>
+                <td><code>POST_NOTIFICATIONS</code></td>
+                <td>To send you a local notification when your integrity status changes</td>
+            </tr>
+            <tr>
+                <td><code>RECEIVE_BOOT_COMPLETED</code></td>
+                <td>To schedule an integrity check shortly after the device boots</td>
+            </tr>
+            <tr>
+                <td><code>SCHEDULE_EXACT_ALARM</code> / <code>USE_EXACT_ALARM</code></td>
+                <td>To fire daily scheduled checks at the times you configure</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>The app does not request permissions for location, contacts, camera, microphone, phone state, or storage.</p>
+
+    <hr>
+
+    <h2>6. Children</h2>
+    <p>This app is not directed at children under 13 and does not knowingly collect information from anyone under 13.</p>
+
+    <hr>
+
+    <h2>7. Data retention and deletion</h2>
+    <ul>
+        <li><strong>On-device data</strong> is deleted when you clear the app's storage or uninstall the app.</li>
+        <li><strong>Backend rate-limit counters</strong> associated with your install ID hash are automatically aged out after a period of inactivity (currently 90 days of no requests from that install ID).</li>
+        <li>Because the backend stores only a hash of the install ID and no personal identifiers, it is not possible to associate backend records with a specific person or device.</li>
+    </ul>
+
+    <hr>
+
+    <h2>8. Security</h2>
+    <p>All communication between the app and the backend uses HTTPS with TLS. The backend validates package name, signing certificate, request hash, and token freshness before processing any request, rejecting replayed or tampered tokens.</p>
+
+    <hr>
+
+    <h2>9. Changes to this policy</h2>
+    <p>If the data practices described above change materially, this document will be updated and the "Last updated" date at the top will be revised. For significant changes, a notice will be displayed in the app.</p>
+
+    <hr>
+
+    <h2>10. Contact</h2>
+    <p>Questions or concerns about this privacy policy can be directed to the project repository:<br>
+    <strong><a href="https://github.com/ByteBuddiesGroup/play_integrity_autocheck" target="_blank" rel="noopener noreferrer">https://github.com/ByteBuddiesGroup/play_integrity_autocheck</a></strong></p>
+
+</body>
+</html>
