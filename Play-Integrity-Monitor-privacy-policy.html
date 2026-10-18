@@ -50,228 +50,213 @@
     </style>
 </head>
 <body>
-
-    <h1>Privacy Policy</h1>
-
-    <p>
-        <strong>App:</strong> Play Integrity Monitor<br>
-        <strong>Developer:</strong> ByteBuddies<br>
-        <strong>Last updated:</strong> 2026-05-19
-    </p>
-
-    <hr>
-
-    <h2>Summary</h2>
-    <p>Play Integrity Monitor does not collect personal information, does not have accounts, does not run advertising, and does not sell or share your data with third parties. The sections below explain precisely what data exists, where it goes, and how long it stays.</p>
-
-    <hr>
-
-    <h2>1. What the app does</h2>
-    <p>Play Integrity Monitor calls the <a href="https://developer.android.com/google/play/integrity/overview" target="_blank" rel="noopener noreferrer">Google Play Integrity API</a> on your behalf to determine whether your device currently satisfies the criteria that Google Wallet and similar apps use when deciding to allow contactless payments. The result is displayed on your device and stored locally so you can see how it has changed over time.</p>
-
-    <hr>
-
-    <h2>2. Data stored on your device</h2>
-    <p>All of the following lives exclusively in the app's private storage on your device. It is never shared with advertisers, analytics providers, or any service other than the app's own backend (described in section 3).</p>
-
-    <table>
-        <thead>
-            <tr>
-                <th>What</th>
-                <th>Why</th>
-                <th>How long</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><strong>Random install ID</strong></td>
-                <td>A UUID generated at first launch, used to apply per-installation rate limits on the backend. It is not linked to your Google account, Android ID, or any other identifier. You can reset it by clearing app data.</td>
-                <td>Until you clear app data or uninstall</td>
-            </tr>
-            <tr>
-                <td><strong>Check history</strong></td>
-                <td>Timestamp, result status, trigger type, device integrity verdict flags, and the raw JSON response for each completed check</td>
-                <td>90 days (older entries are deleted automatically)</td>
-            </tr>
-            <tr>
-                <td><strong>App preferences</strong></td>
-                <td>Auto-check on/off, check schedule times, notification preference, quota counters, last-check timestamps, and server config cache</td>
-                <td>Until you clear app data or uninstall</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <p>The app does <strong>not</strong> store:</p>
-    <ul>
-        <li>Your name, email address, or any account credentials</li>
-        <li>Your location</li>
-        <li>Your contacts, calendar, photos, or any media</li>
-        <li>Advertising identifiers (GAID)</li>
-        <li>Device identifiers such as IMEI or MAC address</li>
-    </ul>
-
-    <hr>
-
-    <h2>3. Data sent to the app's backend</h2>
-    <p>Each integrity check sends one HTTPS request to the app's backend server (<code>integrity-autocheck-backend-*.run.app</code>), which is operated by ByteBuddies on Google Cloud Run.</p>
-
-    <p>The request contains:</p>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Field</th>
-                <th>What it is</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Encrypted Play Integrity token</td>
-                <td>An opaque token issued by Google's Play Integrity API. The backend sends it to Google for decoding; the raw token is not stored.</td>
-            </tr>
-            <tr>
-                <td>Request hash</td>
-                <td>A non-reversible hash of the request context. Used to bind the token to this specific request and detect replays.</td>
-            </tr>
-            <tr>
-                <td>Install ID</td>
-                <td>The random UUID described in section 2.</td>
-            </tr>
-            <tr>
-                <td>Trigger</td>
-                <td>What started the check (e.g., <code>manual</code>, <code>periodic</code>, <code>boot</code>).</td>
-            </tr>
-            <tr>
-                <td>Client timestamp</td>
-                <td>The time the check was initiated, used to verify token freshness.</td>
-            </tr>
-            <tr>
-                <td>App version</td>
-                <td>Version code and version name of Play Integrity Monitor.</td>
-            </tr>
-            <tr>
-                <td>Google Wallet version</td>
-                <td>Version of Google Wallet on your device, if installed. Sent as a diagnostic aid.</td>
-            </tr>
-            <tr>
-                <td>Play Services version</td>
-                <td>Version of Google Play Services on your device.</td>
-            </tr>
-            <tr>
-                <td>Play Store version</td>
-                <td>Version of Google Play Store on your device.</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <p>The backend returns a compact decision (<code>ready</code>, <code>likely_blocked</code>, <code>unknown</code>, <code>error</code>) plus the verdict labels from the Play Integrity API. The backend does <strong>not</strong> return, and the app does <strong>not</strong> transmit, your Google account identity, location, contacts, or any personal identifiers beyond the install ID.</p>
-
-    <h3>What the backend retains</h3>
-    <p>The backend uses <a href="https://firebase.google.com/docs/firestore" target="_blank" rel="noopener noreferrer">Cloud Firestore</a> to enforce per-installation rate limits. For each install ID it stores:</p>
-    <ul>
-        <li>A hash of the install ID (the raw UUID is not stored)</li>
-        <li>Daily request count</li>
-        <li>Timestamp of the most recent request</li>
-        <li>Error counters</li>
-    </ul>
-
-    <p>The backend does <strong>not</strong> store the raw integrity token, the full decrypted verdict payload, or any account identifiers. Aggregated operational metrics (request counts, decision distribution, error rates, latency) are logged without any per-install identifiers for capacity planning and quota management.</p>
-
-    <hr>
-
-    <h2>4. Third-party services</h2>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Service</th>
-                <th>Purpose</th>
-                <th>Privacy information</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><strong>Google Play Integrity API</strong></td>
-                <td>Issues the encrypted integrity token that the backend decodes</td>
-                <td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a></td>
-            </tr>
-            <tr>
-                <td><strong>Google Cloud Run</strong></td>
-                <td>Hosts the app's backend</td>
-                <td><a href="https://cloud.google.com/terms/cloud-privacy-notice" target="_blank" rel="noopener noreferrer">Google Cloud Privacy</a></td>
-            </tr>
-            <tr>
-                <td><strong>Google Cloud Firestore</strong></td>
-                <td>Stores rate-limit counters on the backend</td>
-                <td><a href="https://cloud.google.com/terms/cloud-privacy-notice" target="_blank" rel="noopener noreferrer">Google Cloud Privacy</a></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <p>The app does not use any advertising SDKs, crash-reporting services, analytics SDKs, or social login SDKs.</p>
-
-    <hr>
-
-    <h2>5. Permissions</h2>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Permission</th>
-                <th>Why it is needed</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><code>INTERNET</code></td>
-                <td>To reach the backend server and the Play Integrity API</td>
-            </tr>
-            <tr>
-                <td><code>POST_NOTIFICATIONS</code></td>
-                <td>To send you a local notification when your integrity status changes</td>
-            </tr>
-            <tr>
-                <td><code>RECEIVE_BOOT_COMPLETED</code></td>
-                <td>To schedule an integrity check shortly after the device boots</td>
-            </tr>
-            <tr>
-                <td><code>SCHEDULE_EXACT_ALARM</code> / <code>USE_EXACT_ALARM</code></td>
-                <td>To fire daily scheduled checks at the times you configure</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <p>The app does not request permissions for location, contacts, camera, microphone, phone state, or storage.</p>
-
-    <hr>
-
-    <h2>6. Children</h2>
-    <p>This app is not directed at children under 13 and does not knowingly collect information from anyone under 13.</p>
-
-    <hr>
-
-    <h2>7. Data retention and deletion</h2>
-    <ul>
-        <li><strong>On-device data</strong> is deleted when you clear the app's storage or uninstall the app.</li>
-        <li><strong>Backend rate-limit counters</strong> associated with your install ID hash are automatically aged out after a period of inactivity (currently 90 days of no requests from that install ID).</li>
-        <li>Because the backend stores only a hash of the install ID and no personal identifiers, it is not possible to associate backend records with a specific person or device.</li>
-    </ul>
-
-    <hr>
-
-    <h2>8. Security</h2>
-    <p>All communication between the app and the backend uses HTTPS with TLS. The backend validates package name, signing certificate, request hash, and token freshness before processing any request, rejecting replayed or tampered tokens.</p>
-
-    <hr>
-
-    <h2>9. Changes to this policy</h2>
-    <p>If the data practices described above change materially, this document will be updated and the "Last updated" date at the top will be revised. For significant changes, a notice will be displayed in the app.</p>
-
-    <hr>
-
-    <h2>10. Contact</h2>
-    <p>Questions or concerns about this privacy policy can be directed to the project repository:<br>
-    <strong><a href="https://github.com/ByteBuddiesGroup/play_integrity_autocheck" target="_blank" rel="noopener noreferrer">https://github.com/ByteBuddiesGroup/play_integrity_autocheck</a></strong></p>
-
+<h1>Privacy Policy</h1>
+<p><strong>App:</strong> Play Integrity Monitor<br>
+<strong>Developer:</strong> ByteBuddies<br>
+<strong>Last updated:</strong> 2026-10-18</p>
+<hr>
+<h2>Summary</h2>
+<p>Play Integrity Monitor has no accounts or advertising and does not sell data. Normal checks send a random installation ID and diagnostic request data to our backend. An optional crowdsourcing preview, off by default, collects pseudonymous setup observations after explicit consent. Hashed IDs and keybox fingerprints can link observations; they are not anonymous data. Google Cloud hosts and processes backend data as described below.</p>
+<hr>
+<h2>1. What the app does</h2>
+<p>Play Integrity Monitor calls the <a href="https://developer.android.com/google/play/integrity/overview" rel="nofollow">Google Play Integrity API</a> on your behalf to determine whether your device currently satisfies the criteria that Google Wallet and similar apps use when deciding to allow contactless payments. The result is displayed on your device and stored locally so you can see how it has changed over time.</p>
+<hr>
+<h2>2. Data stored on your device</h2>
+<p>The following is stored in the app's private storage. Android backup may include ordinary settings/history, but excludes the local identity study store. It is never shared with advertisers, analytics providers, or any service other than the app's own backend (described in section 3).</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>What</th>
+<th>Why</th>
+<th>How long</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Random install ID</strong></td>
+<td>A UUID generated at first launch, used to apply per-installation rate limits on the backend. It is not linked to your Google account, Android ID, or any other identifier. You can reset it by clearing app data.</td>
+<td>Until you clear app data or uninstall</td>
+</tr>
+<tr>
+<td><strong>Check history</strong></td>
+<td>Timestamp, result status, trigger type, device integrity verdict flags, and the raw JSON response for each completed check</td>
+<td>90 days (older entries are deleted automatically)</td>
+</tr>
+<tr>
+<td><strong>Local identity study state</strong></td>
+<td>Initial composite certificate-chain fingerprint, initial probe outcome, consent/targeting claim, current local probe and up to eight pending setup observations. Stored separately in Android storage excluded from backup and device transfer. The initial fingerprint is never sent by the study.</td>
+<td>Until app data is cleared or the app is uninstalled; opting out clears current/pending observations and consent, while retaining the local initial comparison</td>
+</tr>
+<tr>
+<td><strong>App preferences</strong></td>
+<td>Auto-check on/off, check schedule times, notification preference, quota counters, last-check timestamps, and server config cache</td>
+<td>Until you clear app data or uninstall</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p>The app does <strong>not</strong> store:</p>
+<ul>
+<li>Your name, email address, or any account credentials</li>
+<li>Your location</li>
+<li>Your contacts, calendar, photos, or any media</li>
+<li>Advertising identifiers (GAID)</li>
+<li>Device identifiers such as IMEI or MAC address</li>
+</ul>
+<hr>
+<h2>3. Data sent to the app's backend</h2>
+<p>Each integrity check sends one HTTPS request to the app's backend server (<code class="notranslate">integrity-autocheck-backend-*.run.app</code>), which is operated by ByteBuddies on Google Cloud Run.</p>
+<p>The request contains:</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>Field</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Encrypted Play Integrity token</td>
+<td>An opaque token issued by Google's Play Integrity API. The backend sends it to Google for decoding; the raw token is not stored.</td>
+</tr>
+<tr>
+<td>Request hash</td>
+<td>A non-reversible hash of the request context. Used to bind the token to this specific request and detect replays.</td>
+</tr>
+<tr>
+<td>Install ID</td>
+<td>The random UUID described in section 2.</td>
+</tr>
+<tr>
+<td>Trigger</td>
+<td>What started the check (e.g., <code class="notranslate">manual</code>, <code class="notranslate">periodic</code>, <code class="notranslate">boot</code>).</td>
+</tr>
+<tr>
+<td>Client timestamp</td>
+<td>The time the check was initiated, used to verify token freshness.</td>
+</tr>
+<tr>
+<td>App version</td>
+<td>Version code and version name of Play Integrity Monitor.</td>
+</tr>
+<tr>
+<td>Google Wallet version</td>
+<td>Version of Google Wallet on your device, if installed. Sent as a diagnostic aid.</td>
+</tr>
+<tr>
+<td>Play Services version</td>
+<td>Version of Google Play Services on your device.</td>
+</tr>
+<tr>
+<td>Play Store version</td>
+<td>Version of Google Play Store on your device.</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p>The backend returns a compact decision (<code class="notranslate">ready</code>, <code class="notranslate">likely_blocked</code>, <code class="notranslate">unknown</code>, <code class="notranslate">error</code>) plus the verdict labels from the Play Integrity API. The backend does <strong>not</strong> return, and the app does <strong>not</strong> transmit, your Google account identity, location, contacts, or any personal identifiers beyond the install ID.</p>
+<h3>What the backend retains</h3>
+<p>The backend uses <a href="https://firebase.google.com/docs/firestore" rel="nofollow">Cloud Firestore</a> to enforce per-installation rate limits. For each install ID it stores:</p>
+<ul>
+<li>A hash of the install ID (the raw UUID is not stored)</li>
+<li>Daily request count</li>
+<li>Timestamp of the most recent request</li>
+<li>Error counters</li>
+</ul>
+<p>The backend does <strong>not</strong> store the raw integrity token, the full decrypted verdict payload, or any account identifiers. Operational request logs contain request IDs, a hash of the installation ID, compact verdicts/reasons and app/service versions. These are pseudonymous diagnostics, not anonymous aggregate counts. Ordinary application logs currently use a 30-day Cloud Logging retention period.</p>
+<hr>
+<h3>Optional crowdsourcing setup study</h3>
+<p>Participation requires accepting the disclosure and claiming that spoofing is configured for this app with the same keybox used for Play Integrity. A local probe is compared with the first observation taken when this feature was first launched. This does not prove spoofing: the initial identity may already be spoofed, and native certificates can rotate.</p>
+<p>With a supported normal Integrity check, the opted-in app can send:</p>
+<ul>
+<li>A random observation ID, consent/schema versions and self-reported targeting claim.</li>
+<li>Setup-confirmation, manual-recheck or normal-check phase.</li>
+<li>Changed, unchanged, no-baseline or probe-failed result.</li>
+<li>Initial/current certificate-chain depths, a coarse initial-observation age range and a generic probe-error category.</li>
+<li>Android SDK version. The check also supplies the sending app version and the usual random installation ID; analytics retain its hash together with the Device/Strong verdict summary.</li>
+</ul>
+<p>These setup analytics never include the initial/current certificate fingerprint, raw certificates, private keys, certificate serial numbers or device model/build fingerprint. No Firebase Analytics or other analytics SDK is added. Events are queued locally and sent with normal checks; the study does not request extra Play Integrity checks. Opting out clears queued observations and stops future sending. Already collected study events remain until ordinary log expiry, currently <strong>30 days</strong>.</p>
+<p>The consent also describes future shared-keybox monitoring: once available, the current reported keybox fingerprint and installation ID may accompany normal verdicts to associate installs. That group-upload capability is not enabled in the current preview. Its active membership window is 48 hours without a check and failure evidence one hour; these windows do not shorten analytics log retention. No certificates or private keys will be uploaded. Immediate membership deletion and published rollout details must be completed before enabling that capability.</p>
+<h2>4. Third-party services</h2>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>Service</th>
+<th>Purpose</th>
+<th>Privacy information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Google Play Integrity API</strong></td>
+<td>Issues the encrypted integrity token that the backend decodes</td>
+<td><a href="https://policies.google.com/privacy" rel="nofollow">Google Privacy Policy</a></td>
+</tr>
+<tr>
+<td><strong>Google Cloud Run</strong></td>
+<td>Hosts the app's backend</td>
+<td><a href="https://cloud.google.com/terms/cloud-privacy-notice" rel="nofollow">Google Cloud Privacy</a></td>
+</tr>
+<tr>
+<td><strong>Google Cloud Logging</strong></td>
+<td>Stores operational logs and explicitly opted-in setup-study events; current ordinary-log retention is 30 days</td>
+<td><a href="https://cloud.google.com/terms/cloud-privacy-notice" rel="nofollow">Google Cloud Privacy</a></td>
+</tr>
+<tr>
+<td><strong>Google Cloud Firestore</strong></td>
+<td>Stores rate-limit counters on the backend</td>
+<td><a href="https://cloud.google.com/terms/cloud-privacy-notice" rel="nofollow">Google Cloud Privacy</a></td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p>The app does not use any advertising SDKs, crash-reporting services, analytics SDKs, or social login SDKs.</p>
+<hr>
+<h2>5. Permissions</h2>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>Permission</th>
+<th>Why it is needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code class="notranslate">INTERNET</code></td>
+<td>To reach the backend server and the Play Integrity API</td>
+</tr>
+<tr>
+<td><code class="notranslate">POST_NOTIFICATIONS</code></td>
+<td>To send you a local notification when your integrity status changes</td>
+</tr>
+<tr>
+<td><code class="notranslate">RECEIVE_BOOT_COMPLETED</code></td>
+<td>To schedule an integrity check shortly after the device boots</td>
+</tr>
+<tr>
+<td><code class="notranslate">SCHEDULE_EXACT_ALARM</code> / <code class="notranslate">USE_EXACT_ALARM</code></td>
+<td>To fire daily scheduled checks at the times you configure</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p>The app does not request permissions for location, contacts, camera, microphone, phone state, or storage.</p>
+<hr>
+<h2>6. Children</h2>
+<p>This app is not directed at children under 13 and does not knowingly collect information from anyone under 13.</p>
+<hr>
+<h2>7. Data retention and deletion</h2>
+<ul>
+<li><strong>On-device data</strong> is deleted when you clear the app's storage or uninstall the app.</li>
+<li><strong>Ordinary backend logs and setup analytics</strong> currently expire after 30 days. Opting out stops future study uploads; it does not retroactively remove already ingested events.</li>
+<li><strong>Rate-limit records</strong> store hashed install IDs and counters. The current limiter does not implement the automatic 90-day deletion claimed by an earlier policy version; retention/deletion maintenance remains a separate backend task.</li>
+<li>A hash does not make an installation unidentifiable: records can still be associated with the same installation. No account identity is requested by this app.</li>
+</ul>
+<hr>
+<h2>8. Security</h2>
+<p>All communication between the app and the backend uses HTTPS with TLS. The backend validates package name, signing certificate, request hash, and token freshness before processing any request, rejecting replayed or tampered tokens.</p>
+<hr>
+<h2>9. Changes to this policy</h2>
+<p>If the data practices described above change materially, this document will be updated and the "Last updated" date at the top will be revised. For significant changes, a notice will be displayed in the app.</p>
+<hr>
+<h2>10. Contact</h2>
+<p>Questions or concerns about this privacy policy can be directed to the project repository:<br>
+<strong><a href="https://github.com/ByteBuddiesGroup/play_integrity_autocheck">https://github.com/ByteBuddiesGroup/play_integrity_autocheck</a></strong></p>
 </body>
 </html>
