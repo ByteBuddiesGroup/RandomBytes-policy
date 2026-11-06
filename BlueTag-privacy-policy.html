@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - BlueTag: Spy Tags Detector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #222;
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid #ccc;
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<h1>Privacy Policy</h1>
+<p><strong>App:</strong> BlueTag: Spy Tags Detector (<code>com.bytebuddies.bluetag</code>)<br>
+<strong>Developer:</strong> ByteBuddies<br>
+<strong>Contact:</strong> <a href="mailto:group.byte.buddies@gmail.com">group.byte.buddies@gmail.com</a><br>
+<strong>Last updated:</strong> 2026-11-06</p>
+<hr>
+<h2>Summary</h2>
+<p>BlueTag looks for nearby Bluetooth trackers (such as AirTag, SmartTag and Tile) that may be travelling with you, and helps you find them. It has no accounts and no ads, and we do not sell data. Tracker sightings and the places where they were seen are stored only on your phone. A small amount of data reaches Google Firebase: an app-configuration request that is always made, usage and crash diagnostics only if you turn them on, and feedback messages you choose to send. Map tiles for the sighting map are loaded from OpenStreetMap.</p>
+<hr>
+<h2>1. What the app does</h2>
+<p>BlueTag scans for Bluetooth Low Energy advertisements from known tracker types. It flags trackers that keep appearing near you in different places, and offers a hot/cold proximity finder to locate them physically. Scans run when you start them. If you turn on automatic checks, a short scan also runs about every 15 minutes while the app is closed. An optional ongoing scan you start in the app runs as a foreground service with a visible notification you can stop at any time.</p>
+<hr>
+<h2>2. Data stored only on your device</h2>
+<p>The following is kept in the app's private storage. It is <strong>not uploaded</strong> to us or anyone else. It is excluded from Android cloud backup and device-to-device transfer.</p>
+<table>
+<thead>
+<tr>
+<th>What</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Detected trackers</strong></td>
+<td>Tracker type, Bluetooth address and identifiers from the advertisement, signal strength, and first and last seen times. Used to recognise the same tracker across scans and to rate risk.</td>
+</tr>
+<tr>
+<td><strong>Sighting locations</strong></td>
+<td>Only if you grant location permission: the phone's coordinates, accuracy and time for each sighting, up to 200 per tracker. Used to tell whether a tracker followed you to different places and to show sightings on a map.</td>
+</tr>
+<tr>
+<td><strong>Your choices</strong></td>
+<td>Labels such as "it's mine" or "false alarm", scan settings, notification and diagnostics preferences, and subscription or tester status.</td>
+</tr>
+<tr>
+<td><strong>Beta tester email</strong></td>
+<td>If you enter the email your tester invite was sent to, it is checked on the device against a list delivered by Remote Config. The email is never uploaded.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Export.</strong> If you use "Export detection history", BlueTag writes a JSON file to a location you choose. It contains tracker addresses, detection times and sighting coordinates. Once exported, that file is outside BlueTag's storage and under your control; deleting BlueTag's data does not delete it.</p>
+<hr>
+<h2>3. Location</h2>
+<p>Location is optional on Android 12 and newer; manual scans work with the "Nearby devices" permission alone. On older Android versions, Bluetooth scanning itself requires location.</p>
+<ul>
+<li><strong>Precise location</strong> attaches a place to each tracker sighting. Without it, a tracker can be rated at most Medium risk, and automatic checks stay off.</li>
+<li><strong>Background location ("Allow all the time")</strong> is requested only if you turn on automatic checks, so that the periodic scan can run and record sighting places while the app is closed.</li>
+</ul>
+<p>Sighting locations stay on your phone. BlueTag does not send your location to us, to Firebase or to advertisers.</p>
+<hr>
+<h2>4. Data that leaves your device</h2>
+<h3>4.1 Firebase Remote Config (always on)</h3>
+<p>When the app starts, it downloads configuration values from Google Firebase, such as feature switches and the beta tester list. This request uses a Firebase installation ID (a random identifier for this installation of the app) and includes basic information such as app version, Android version, language and country. Like any internet request, it also reveals your IP address to Google.</p>
+<h3>4.2 Usage and crash diagnostics (off by default)</h3>
+<p>The setting "Share usage and crash diagnostics" is <strong>off</strong> by default. Only if you turn it on, BlueTag enables:</p>
+<ul>
+<li><strong>Firebase Analytics:</strong> screen views and app interaction events, with device and app information, approximate country, and the Android Advertising ID. The Advertising ID is used only for analytics, not for showing ads.</li>
+<li><strong>Firebase Crashlytics:</strong> crash reports and diagnostics, such as stack traces, device model and Android version.</li>
+</ul>
+<p>Turning the setting off stops collection and deletes crash reports that have not been sent yet.</p>
+<h3>4.3 Feedback you send</h3>
+<p>If you send feedback from the app, your message is stored in Google Cloud Firestore together with where it was sent from in the app, the app package and version, and the time. No name, email, device identifier or location is attached. Do not include personal information in your message unless you want us to have it.</p>
+<h3>4.4 Sighting map tiles</h3>
+<p>When you open a sighting map, map images are downloaded from OpenStreetMap tile servers. These requests reveal your IP address and the map area being viewed to the tile provider, but not tracker identities. Map tiles may be cached on your phone.</p>
+<h3>4.5 Subscriptions</h3>
+<p>Purchases are processed by Google Play. We do not receive your payment details. The app checks with Google Play whether your subscription is active.</p>
+<h3>4.6 Notifications</h3>
+<p>Tracker alerts are local notifications generated on your phone. BlueTag does not use push notifications.</p>
+<hr>
+<h2>5. Third-party services</h2>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Purpose</th>
+<th>Privacy information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Firebase Remote Config</strong></td>
+<td>App configuration and beta tester list</td>
+<td rowspan="4"><a href="https://firebase.google.com/support/privacy">Firebase privacy</a> and <a href="https://policies.google.com/privacy">Google Privacy Policy</a></td>
+</tr>
+<tr>
+<td><strong>Firebase Analytics</strong></td>
+<td>Usage statistics, only if you opt in</td>
+</tr>
+<tr>
+<td><strong>Firebase Crashlytics</strong></td>
+<td>Crash reports, only if you opt in</td>
+</tr>
+<tr>
+<td><strong>Cloud Firestore</strong></td>
+<td>Stores feedback messages you send</td>
+</tr>
+<tr>
+<td><strong>Google Play Billing</strong></td>
+<td>Subscription purchases and status</td>
+<td><a href="https://policies.google.com/privacy">Google Privacy Policy</a></td>
+</tr>
+<tr>
+<td><strong>OpenStreetMap tile servers</strong></td>
+<td>Map images for the sighting map</td>
+<td><a href="https://osmfoundation.org/wiki/Privacy_Policy">OSMF Privacy Policy</a></td>
+</tr>
+</tbody>
+</table>
+<p>Google acts as our service provider for Firebase and Google Play. We do not sell your data or share it for advertising. BlueTag contains no ads.</p>
+<hr>
+<h2>6. Permissions</h2>
+<table>
+<thead>
+<tr>
+<th>Permission</th>
+<th>Why it is needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BLUETOOTH_SCAN</code>, <code>BLUETOOTH_CONNECT</code> (and <code>BLUETOOTH</code>, <code>BLUETOOTH_ADMIN</code> on Android 11 and older)</td>
+<td>Detect nearby trackers, and connect to supported trackers to play a sound</td>
+</tr>
+<tr>
+<td><code>ACCESS_FINE_LOCATION</code>, <code>ACCESS_COARSE_LOCATION</code></td>
+<td>Record where each tracker was seen; required for Bluetooth scanning on Android 11 and older</td>
+</tr>
+<tr>
+<td><code>ACCESS_BACKGROUND_LOCATION</code></td>
+<td>Automatic checks while the app is closed, only if you turn them on</td>
+</tr>
+<tr>
+<td><code>FOREGROUND_SERVICE</code>, <code>FOREGROUND_SERVICE_CONNECTED_DEVICE</code>, <code>FOREGROUND_SERVICE_LOCATION</code></td>
+<td>The ongoing scan you start in the app, shown with a notification you can stop</td>
+</tr>
+<tr>
+<td><code>REQUEST_IGNORE_BATTERY_OPTIMIZATIONS</code>, <code>WAKE_LOCK</code></td>
+<td>Keep automatic checks from being postponed indefinitely; you are asked explicitly</td>
+</tr>
+<tr>
+<td><code>POST_NOTIFICATIONS</code></td>
+<td>Alert you when a tracker may be following you</td>
+</tr>
+<tr>
+<td><code>VIBRATE</code></td>
+<td>Haptic feedback in the proximity finder</td>
+</tr>
+<tr>
+<td><code>INTERNET</code></td>
+<td>Firebase services and map tiles</td>
+</tr>
+<tr>
+<td><code>BILLING</code></td>
+<td>Subscriptions through Google Play</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>7. Data retention and deletion</h2>
+<ul>
+<li><strong>On-device data</strong> is kept until you clear it in the app, clear the app's storage, or uninstall BlueTag. Exported files must be deleted separately.</li>
+<li><strong>Firebase data</strong> (Remote Config, Analytics, Crashlytics) is kept according to Firebase's retention periods.</li>
+<li><strong>Feedback messages</strong> are kept until we delete them. Because no identity is attached, email us the text and approximate date of your message to request deletion.</li>
+</ul>
+<hr>
+<h2>8. Security</h2>
+<p>All communication with Firebase and Google Play uses encrypted HTTPS connections. On-device data is stored in the app's private storage, which other apps cannot read.</p>
+<hr>
+<h2>9. Children</h2>
+<p>BlueTag is intended for adults (18+) and is not directed at children. We do not knowingly collect data from children.</p>
+<hr>
+<h2>10. Changes to this policy</h2>
+<p>If our data practices change, this page will be updated and the "Last updated" date above will be revised.</p>
+<hr>
+<h2>11. Contact</h2>
+<p>Questions or requests about this privacy policy: <a href="mailto:group.byte.buddies@gmail.com">group.byte.buddies@gmail.com</a></p>
+</body>
+</html>
